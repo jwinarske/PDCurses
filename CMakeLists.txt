@@ -33,22 +33,30 @@ if(CYGWIN)
 endif()
 
 if(PDC_DOS_BUILD)
+
     add_subdirectory(dos)
-endif()
+    
+else()
 
-add_subdirectory(ncurses)
+    add_subdirectory(ncurses)
+    
+    if(PDC_SDL2_BUILD)
+    
+        add_subdirectory(sdl2)
+        
+    endif()
 
-if(PDC_SDL1_BUILD)
-    add_subdirectory(sdl1)
-endif()
+    if(UNIX)
+        add_subdirectory(vt)
+    endif()
 
-if(PDC_SDL2_BUILD)
-    add_subdirectory(sdl2)
-endif()
-
-if(WIN32 AND NOT WATCOM)
-    add_subdirectory(wincon)
-    add_subdirectory(wingui)
+    if(WIN32)
+    
+        add_subdirectory(wincon)
+        add_subdirectory(wingui)
+        
+    endif()
+   
 endif()
 
 add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_SOURCE_DIR}/cmake/make_uninstall.cmake")

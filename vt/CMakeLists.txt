@@ -5,11 +5,11 @@ if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "No build type specified, defaulting to MinSizeRel.")
 endif()
 
-PROJECT(wingui VERSION "${PROJECT_VERSION}" LANGUAGES C)
+PROJECT(vt VERSION "${PROJECT_VERSION}" LANGUAGES C)
 
 INCLUDE(project_common)
-  
-demo_app(../demos version)
+
+
 demo_app(../demos firework)
 demo_app(../demos ozdemo)
 demo_app(../demos newtest)
@@ -19,6 +19,7 @@ demo_app(../demos testcurs)
 demo_app(../demos tuidemo)
 demo_app(../demos worm)
 demo_app(../demos xmas)
+
 
 IF(WIN32)
     SET_TARGET_PROPERTIES(${PROJECT_NAME}_newtest PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")

@@ -7,50 +7,6 @@ IF (PDC_SDL2_DEPS_BUILD)
         set(FLAGS_FOR_DYNAMIC_LINK -fPIC) 
     ENDIF()
 
-    if(PDC_SDL1_BUILD)
-        set(SDL1_RELEASE 1.2.15)
-        ExternalProject_Add(sdl1_ext
-            URL https://www.libsdl.org/release/SDL-${SDL1_RELEASE}.zip
-            URL_HASH "SHA256=94ad1068f0ca7fda489a83ffde9507e863657e31822f5ce236ae1a35e73e3875"
-            UPDATE_COMMAND ""
-            DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
-            SOURCE_DIR ${CMAKE_BINARY_DIR}/SDL1-${SDL1_RELEASE}
-            BUILD_IN_SOURCE 0
-            CMAKE_ARGS
-                ${SDL_CMAKE_BUILD_OPTS}
-                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}
-                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-                -DCMAKE_C_FLAGS=${FLAGS_FOR_DYNAMIC_LINK} ${EXTERNAL_C_FLAGS}
-            )
-
-        message(STATUS "SDL1 Installing to: ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}")
-        set(SDL1_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}/include/SDL)
-        set(SDL1_LIBRARY_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}/lib)
-        if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-            if(WIN32)
-                set(SDL1_LIBRARIES "SDLmaind.lib;SDLd.lib")
-                set(SDL1_LIBRARY "SDLd.lib")
-            elseif(APPLE)
-                set(SDL1_LIBRARIES "SDLmaind;SDLd")
-                set(SDL1_LIBRARY "SDLd")
-            else()
-                set(SDL1_LIBRARIES "SDLmaind;SDL1-2.0d")
-                set(SDL1_LIBRARY "SDL1-2.0d")
-            endif()
-        else()
-            if(WIN32)
-                set(SDL1_LIBRARIES "SDLmain.lib;SDL.lib")
-                set(SDL1_LIBRARY "SDL.lib")
-            elseif(APPLE)
-                set(SDL1_LIBRARIES "SDLmain;SDL")
-                set(SDL1_LIBRARY "SDL")
-            else()
-                set(SDL1_LIBRARIES "SDLmain;SDL1-2.0")
-                set(SDL1_LIBRARY "SDL1-2.0")
-            endif()
-        endif()
-    endif()
-
     SET(SDL2_RELEASE 2.0.8)
     ExternalProject_Add(sdl2_ext
         URL https://www.libsdl.org/release/SDL2-${SDL2_RELEASE}.zip
