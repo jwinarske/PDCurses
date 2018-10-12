@@ -1,0 +1,216 @@
+language: c
+
+install:    
+    - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+    - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+    - travis_retry wget --no-check-certificate https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
+    - echo "96d67e21f0983ebf0fffc5b106ec338c *cmake-3.11.0-Linux-x86_64.tar.gz" > cmake_md5.txt
+    - md5sum -c cmake_md5.txt
+    - tar -xvf cmake-3.11.0-Linux-x86_64.tar.gz > /dev/null
+    - mv cmake-3.11.0-Linux-x86_64 cmake-install
+    - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
+    - cd ${TRAVIS_BUILD_DIR}
+
+matrix:
+    include:
+        - env: test="x86_x64 ncursesw (GCC 4.8.4)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          script:
+            - cd ncurses
+            - make WIDE=Y VERBOSE=1
+
+        - env: test="x86_x64 ncurses (GCC 4.8.4)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          script:
+            - cd ncurses
+            - make WIDE=N VERBOSE=1
+
+        - env: test="x86_x64 x11 Wide (GCC 4.8.4)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          script:
+            - cd x11
+            - ./configure --enable-wide --prefix=${TRAVIS_BUILD_DIR}/build_x0/out
+            - make install VERBOSE=1
+
+        - env: test="x86_x64 x11 (GCC 4.8.4)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          script:
+            - cd x11
+            - ./configure --prefix=${TRAVIS_BUILD_DIR}/build_x1/out
+            - make install VERBOSE=1
+
+        - env: test="x86_x64 Wide MinSizeRel 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build1 && cd build1
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build1/out
+                    ..
+          script:
+            - cmake --build . --config MinSizeRel --target install
+
+        - env: test="x86_x64 Wide Release 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build2 && cd build2
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Release
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build2/out
+                    ..
+          script:
+            - cmake --build . --config Release --target install
+
+        - env: test="x86_x64 Wide Debug 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build3 && cd build3
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF -DPDCDEBUG=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build3/out
+                    ..
+          script:
+            - cmake --build . --config Debug --target install
+
+        - env: test="x86_x64 UTF-8 MinSizeRel 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build4 && cd build4
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build4/out
+                    ..
+          script:
+            - cmake --build . --config MinSizeRel --target install
+
+        - env: test="x86_x64 UTF-8 Release 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build5 && cd build5
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Release
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build5/out
+                    ..
+          script:
+            - cmake --build . --config Release --target install
+
+        - env: test="x86_x64 UTF-8 Debug 4.8.4 (CMake GCC)"
+          os: linux
+          dist: trusty
+          compiler: gcc
+          before_script:
+            - mkdir build6 && cd build6
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON -DPDCDEBUG=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build6/out
+                    ..
+          script:
+            - cmake --build . --config Debug --target install
+
+
+        - env: test="x64 Wide MinSizeRel 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build7 && cd build7
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build7/out
+                    ..
+          script:
+            - cmake --build . --config MinSizeRel --target install
+
+        - env: test="x64 Wide Release 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build8 && cd build8
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Release
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build8/out
+                    ..
+          script:
+            - cmake --build . --config Release --target install
+
+        - env: test="x64 Wide Debug 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build9 && cd build9
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug
+                    -DPDC_WIDE=ON -DPDC_UTF8=OFF -DPDCDEBUG=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build9/out
+                    ..
+          script:
+            - cmake --build . --config Debug --target install
+
+
+        - env: test="x64 UTF-8 MinSizeRel 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build10 && cd build10
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build10/out
+                    ..
+          script:
+            - cmake --build . --config MinSizeRel --target install
+
+        - env: test="x64 UTF-8 Release 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build11 && cd build11
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Release
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build11/out
+                    ..
+          script:
+            - cmake --build . --config Release --target install
+
+        - env: test="x64 UTF-8 Debug 5.0 (CMake clang)"
+          os: linux
+          dist: trusty
+          compiler: clang
+          before_script:
+            - mkdir build12 && cd build12
+            - cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_BUILD_TYPE=Debug
+                    -DPDC_WIDE=OFF -DPDC_UTF8=ON -DPDCDEBUG=ON
+                    -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build12/out
+                    ..
+          script:
+            - cmake --build . --config Debug --target install
+
+addons:
+    apt:
+        packages:
+            - libtool
+            - libncurses5-dev
+            - libncursesw5-dev
+            - libxaw7-dev
+        sources:
+            - ubuntu-toolchain-r-test

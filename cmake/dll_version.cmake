@@ -23,3 +23,4 @@ set(PRODUCT_FILE_DESCRIPTION "${PRODUCT_FILE_DESCRIPTION} ${TOOL_NAME} ${TARGET_
 
 configure_file ( ${CMAKE_SOURCE_DIR}/cmake/version.in.cmake ${CMAKE_CURRENT_BINARY_DIR}/version.rc @ONLY )
 configure_file ( ${CMAKE_SOURCE_DIR}/cmake/resource.in.cmake ${CMAKE_CURRENT_BINARY_DIR}/resource.h @ONLY )
+configure_file ( ${CMAKE_SOURCE_DIR}/wincon/pdcurses.ico ${CMAKE_CURRENT_BINARY_DIR}/pdcurses.ico COPYONLY )

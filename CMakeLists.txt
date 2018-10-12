@@ -47,8 +47,8 @@ if(PDC_SDL2_BUILD)
 endif()
 
 if(WIN32 AND NOT WATCOM)
-    add_subdirectory(win32)
-    add_subdirectory(win32a)
+    add_subdirectory(wincon)
+    add_subdirectory(wingui)
 endif()
 
 add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_SOURCE_DIR}/cmake/make_uninstall.cmake")

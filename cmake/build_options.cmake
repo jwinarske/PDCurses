@@ -18,3 +18,6 @@ message(STATUS "PDC_CHTYPE_16 .......... ${PDC_CHTYPE_16}")
 message(STATUS "PDC_DOS_BUILD .......... ${PDC_DOS_BUILD}")
 message(STATUS "PDC_SDL2_BUILD ......... ${PDC_SDL2_BUILD}")
 message(STATUS "PDC_SDL2_DEPS_BUILD .... ${PDC_SDL2_DEPS_BUILD}")
+
+
+file(TO_CMAKE_PATH "${CMAKE_INSTALL_PREFIX}" CMAKE_INSTALL_PREFIX) # fix up for windows install
