@@ -22,6 +22,10 @@
 # include <XF86keysym.h>
 #endif
 
+#ifdef HAVE_XKBLIB_H
+#include <X11/XKBlib.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -1419,7 +1423,8 @@ static void XCursesKeyPress(Widget w, XEvent *event, String *params,
 #ifdef PDCDEBUG
     for (i = 0; i < 4; i++)
         PDC_debug("%s:Keysym %x %d\n", XCLOGMSG,
-                  XKeycodeToKeysym(XCURSESDISPLAY, event->xkey.keycode, i), i);
+                  XkbKeycodeToKeysym(XCURSESDISPLAY, event->xkey.keycode, 
+                      i, event->xkey.state & ShiftMask ? 1 : 0), i);
 #endif
 
 #ifndef PDC_XIM
@@ -1519,7 +1524,8 @@ static void XCursesKeyPress(Widget w, XEvent *event, String *params,
     /* To get here we are procesing "normal" keys */
 
     PDC_LOG(("%s:Keysym %x %d\n", XCLOGMSG,
-             XKeycodeToKeysym(XCURSESDISPLAY, event->xkey.keycode, key), key));
+             XkbKeycodeToKeysym(XCURSESDISPLAY, event->xkey.keycode, 
+                 key, event->xkey.state & ShiftMask ? 1 : 0), key));
 
         /* 0x10: usually, numlock modifier */
 
@@ -3119,8 +3125,14 @@ static void _process_curses_requests(XtPointer client_data, int *fid,
             break;
 
         case CURSES_DISPLAY_CURSOR:
-            XC_LOG(("CURSES_DISPLAY_CURSOR received from child.  Vis. now: %d\n",
-                     PDC_blink_state));
+            if(PDC_blink_state)
+            {
+                XC_LOG(("CURSES_DISPLAY_CURSOR received from child.  Vis. now: 1\n"));
+            }
+            else
+            {
+                XC_LOG(("CURSES_DISPLAY_CURSOR received from child.  Vis. now: 0\n"));
+            }
             break;
 
         case CURSES_TITLE:

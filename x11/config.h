@@ -67,6 +67,9 @@
 /* Define if you have the <xpm.h> header file */
 #define HAVE_XPM_H 1
 
+/* Define if you have the <X11/XKBlib.h> header file */
+#define HAVE_XKBLIB_H
+
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "wmcbrine@gmail.com"
 
