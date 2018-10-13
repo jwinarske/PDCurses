@@ -22,6 +22,8 @@ if(X11_Xt_FOUND AND X11_Xpm_FOUND AND X11_Xmu_FOUND AND X11_Xaw_FOUND)
 
     PROJECT(x11 VERSION "${PROJECT_VERSION}" LANGUAGES C)
 
+    set(PDCURSES_DIST ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE})
+    
     file(GLOB x11_src_files ./*.c)
 
     include_directories(.. ${X11_INCLUDE_DIR}/X11)
