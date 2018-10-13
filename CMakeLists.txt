@@ -48,6 +48,7 @@ else()
 
     if(UNIX)
         add_subdirectory(vt)
+        add_subdirectory(x11)
     endif()
 
     if(WIN32)
