@@ -29,8 +29,13 @@ set(CMAKE_C_COMPILER "wcc386")
 set(SYSTEM_NAME os2v2)
 
 # detect folder, add lib386 directory
+if(WIN32)
+    set(LOCATE_EXE where)
+else()
+    set(LOCATE_EXE which)
+endif()
 execute_process(
-    COMMAND where ${CMAKE_C_COMPILER}
+    COMMAND ${LOCATE_EXE} ${CMAKE_C_COMPILER}
     OUTPUT_VARIABLE COMPILER_PATH
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
